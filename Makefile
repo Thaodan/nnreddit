@@ -1,6 +1,9 @@
 SHELL := /bin/bash
 EMACS ?= $(shell which emacs)
 export PYTHON ?= python
+ifeq ($(shell command -v $(PYTHON) 2>/dev/null),)
+$(error $(PYTHON) not found)
+endif
 ifeq ($(shell expr $$($(PYTHON) --version 2>&1 | cut -d' ' -f2) \< 3),1)
 $(error Set PYTHON to python3)
 endif
@@ -9,6 +12,9 @@ PKBUILD=2.3
 ELCFILES = $(SRC:.el=.elc)
 CASK_DIR := $(shell EMACS=$(EMACS) cask package-directory || exit 1)
 export TEST_PYTHON ?= python
+ifeq ($(shell command -v $(TEST_PYTHON) 2>/dev/null),)
+$(error $(TEST_PYTHON) not found)
+endif
 ifeq ($(shell expr $$($(TEST_PYTHON) --version 2>&1 | cut -d'.' -f2) \< 9),0)
 $(error Set TEST_PYTHON to an older python3)
 endif
@@ -43,7 +49,6 @@ clean:
 	rm -f tests/log/*
 	rm -rf tests/test-install
 
-
 .PHONY: pylint
 ifeq ($(shell expr $$($(PYTHON) --version 2>&1 | cut -d'.' -f2) \> 9),1)
 pylint:
@@ -57,7 +62,7 @@ endif
 .PHONY: test-compile
 test-compile: cask autoloads pylint
 	sh -e tools/package-lint.sh lisp/nnreddit.el
-	! (cask eval "(let ((byte-compile-error-on-warn t)) (cask-cli/build))" 2>&1 | egrep -a "(Warning|Error):")
+	! (cask eval "(let ((byte-compile-error-on-warn t) (byte-compile--suppressed-warnings (quote ((obsolete define-package))))) (cask-cli/build))" 2>&1 | egrep -a "(Warning|Error):")
 	cask clean-elc
 
 define SET_GITHUB_ACTOR =

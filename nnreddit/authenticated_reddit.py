@@ -176,11 +176,9 @@ class AuthenticatedReddit(Reddit):
         recording_end(cassette)
         return True
 
-    # pragma pylint: disable=arguments-differ
-    def random_subreddit(self, nsfw=False):
-        above = super().random_subreddit(nsfw)
+    def random_subreddit(self, *, nsfw: bool=False):
+        above = super().random_subreddit(nsfw=nsfw)
         return above.display_name
-    # pragma pylint: enable=arguments-differ
 
     def search(self, query, **generator_kwargs):
         return [ x.display_name for x in self.subreddits.search(query, **generator_kwargs) ]
