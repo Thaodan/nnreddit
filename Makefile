@@ -147,7 +147,7 @@ test-run: cask autoloads
 	  --eval "(cl-assert nnreddit-processes)"
 
 .PHONY: test-run-interactive
-test-run-interactive:
+test-run-interactive: cask autoloads
 	cask emacs -Q \
 	  $(TESTRUN) \
 	  -f gnus
