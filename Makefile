@@ -62,7 +62,7 @@ endif
 .PHONY: test-compile
 test-compile: cask autoloads pylint
 	sh -e tools/package-lint.sh lisp/nnreddit.el
-	! (cask eval "(let ((byte-compile-error-on-warn t) (byte-compile--suppressed-warnings (quote ((obsolete define-package))))) (cask-cli/build))" 2>&1 | egrep -a "(Warning|Error):")
+	! (cask eval "(let ((byte-compile-error-on-warn t) (bytecomp--inhibit-lexical-cookie-warning t) (byte-compile--suppressed-warnings (quote ((obsolete define-package))))) (cask-cli/build))" 2>&1 | egrep -a "(Warning|Error):")
 	cask clean-elc
 
 define SET_GITHUB_ACTOR =

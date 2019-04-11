@@ -1482,7 +1482,8 @@ Written by John Wiegley (https://github.com/jwiegley/dot-emacs).")
           (let* ((dont-ask (lambda (prompt)
                              (when (cl-search "mpty article" prompt) t)))
                  (link-p (message-fetch-field "Link"))
-                 (message-shoot-gnksa-feet (if link-p t message-shoot-gnksa-feet)))
+                 (message-shoot-gnksa-feet (if link-p t message-shoot-gnksa-feet))
+		 (message-inhibit-body-encoding t))
             (unwind-protect
                 (progn
                   (when link-p
