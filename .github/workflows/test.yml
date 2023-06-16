@@ -22,7 +22,7 @@ jobs:
         python_version: [3.7]
         include:
           - os: macos-latest
-            emacs_version: 28.1
+            emacs_version: 28.2
             python_version: 3.7
 
     steps:
